@@ -16,22 +16,38 @@ func TestCleanInput(t *testing.T) {
 		},
 		{
 			input:    "Charmander Bulbasaur PIKACHU",
-			expected: []string{"Charmander", "Bulbasaur", "PIKACHU"},
+			expected: []string{"charmander", "bulbasaur", "pikachu"},
+		},
+		{
+			input:    "banana     apple strawberry",
+			expected: []string{"banana", "apple", "strawberry"},
+		},
+		{
+			input:    "hellorhighwater",
+			expected: []string{"hellorhighwater"},
+		},
+		{
+			input:    " ",
+			expected: []string{},
+		},
+		{
+			input:    " HelLO   WORLd",
+			expected: []string{"hello", "world"},
 		},
 	}
 
 	for _, c := range cases {
 		actual := cleanInput(c.input)
-		fmt.Printf("Actual word: %v -> expected word: %v", actual, c.expected)
+		fmt.Printf("Actual word slice: %v -> expected word slice: %v\n", actual, c.expected)
 		if len(actual) != len(c.expected) {
-			t.Errorf("length of actual and length of expected do not match")
-			fmt.Printf("Length of actual: %d -> length of expected: %d", len(actual), len(c.expected))
+			t.Errorf("length of actual slice %d and length of expected slice %d do not match\n", len(actual), len(c.expected))
+			continue
 		}
 		for i := range actual {
 			word := actual[i]
 			expectedWord := c.expected[i]
 			if word != expectedWord {
-				t.Errorf("word and expectedWord do not match")
+				t.Errorf("cleanInput(%v) == %v, expected %v\n", c.input, actual, c.expected)
 			}
 		}
 	}

@@ -16,6 +16,19 @@ func startRepl() {
 		if len(words) == 0 {
 			continue
 		}
+		commandName := words[0]
+
+		command, exists := getCommands()[commandName]
+		if exists {
+			err := command.callback()
+			if err != nil {
+				fmt.Println(err)
+			}
+			continue
+		} else {
+			fmt.Println("Unknown command")
+			continue
+		}
 	}
 }
 
@@ -40,7 +53,7 @@ func getCommands() map[string]cliCommand {
 		},
 		"help": {
 			name:        "help",
-			description: "Displays a help message for Pokedex",
+			description: "Displays this help message for Pokedex",
 			callback:    commandHelp,
 		},
 	}
